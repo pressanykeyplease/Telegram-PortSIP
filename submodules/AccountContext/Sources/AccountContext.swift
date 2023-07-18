@@ -15,6 +15,8 @@ import InAppPurchaseManager
 import AnimationCache
 import MultiAnimationRenderer
 
+import PortSIP
+
 public final class TelegramApplicationOpenUrlCompletion {
     public let completion: (Bool) -> Void
     

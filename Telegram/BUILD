@@ -889,6 +889,51 @@ plist_fragment(
     )
 )
 
+plist_fragment(
+   name = "PortSIPInfoPlist",
+   extension = "plist",
+   template =
+   """
+   <key>CFBundleIdentifier</key>
+   <string>{telegram_bundle_id}.PortSIPFramework</string>
+   <key>CFBundleDevelopmentRegion</key>
+   <string>en</string>
+   <key>CFBundleName</key>
+   <string>PortSIPFramework</string>
+   <key>CFBundlePackageType</key>
+   <string>FMWK</string>
+   """.format(
+       telegram_bundle_id = telegram_bundle_id,
+   )
+)
+
+ios_framework(
+   name = "PortSIPFramework",
+   bundle_id = "{telegram_bundle_id}.PortSIPFramework".format(
+       telegram_bundle_id = telegram_bundle_id,
+   ),
+   bundle_only = True,
+   families = [
+       "iphone",
+       "ipad",
+   ],
+   infoplists = [
+       ":PortSIPInfoPlist",
+       ":BuildNumberInfoPlist",
+       ":VersionInfoPlist",
+       ":RequiredDeviceCapabilitiesPlist",
+   ],
+#    linkopts = [
+#     "-ObjC",
+#     ],
+   minimum_os_version = minimum_os_version,
+   extension_safe = True,
+   ipa_post_processor = strip_framework,
+   deps = [
+       "//third-party/PortSIP:PortSIP",
+   ],
+)
+
 ios_framework(
     name = "PostboxFramework",
     bundle_id = "{telegram_bundle_id}.Postbox".format(
@@ -1968,6 +2013,7 @@ ios_application(
     frameworks = [
         ":MtProtoKitFramework",
         ":SwiftSignalKitFramework",
+        ":PortSIPFramework",
         ":PostboxFramework",
         ":TelegramCoreFramework",
         ":TelegramUIFramework",
